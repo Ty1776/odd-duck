@@ -4,7 +4,7 @@
 
 // * GLOBALS
 
-let voteCount = 5;
+let voteCount = 25;
 let productArray = [];
 
 // * DOM REFERENCES
@@ -121,4 +121,4 @@ productArray.push(bag, banana, bathroom, boots, breakfast, bubblegum, chair, cth
 renderImages();
 
 imageContainer.addEventListener('click', handleImageClick);
-resultsBtn, addEventListener('click', handleShowResults);
+resultsBtn.addEventListener('click', handleShowResults);
