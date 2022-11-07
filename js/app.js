@@ -1,6 +1,6 @@
 'use strict';
 
-console.log('Am I alive?');
+// console.log('Am I alive?');
 
 // * GLOBALS
 
@@ -13,6 +13,8 @@ let imageContainer = document.getElementById('img-container');
 let imgOne = document.getElementById('img-one');
 let imgTwo = document.getElementById('img-two');
 let imgThree = document.getElementById('img-three');
+let resultsBtn = document.getElementById('show-results-btn');
+let resultsContainer = document.getElementById('results-container');
 
 // * HELPER/UTILITY FUNCITONS
 
@@ -50,6 +52,17 @@ function renderImages() {
 
 // * EVENT HANDLERS
 
+function handleShowResults() {
+  if (voteCount === 0) {
+    for (let i = 0; i < productArray.length; i++) {
+      let liElem = document.createElement('li');
+      liElem.textContent = `${productArray[i].name} had ${productArray[i].clicks} votes, and was seen ${productArray[i].views} times.`;
+      resultsContainer.appendChild(liElem);
+    }
+    resultsBtn.removeEventListener('click', handleShowResults);
+  }
+}
+
 function handleImageClick() {
   // console.dir(event.target);
 
@@ -61,6 +74,15 @@ function handleImageClick() {
     }
   }
   voteCount--;
+
+  // * RENDER NEW IMAGES
+  renderImages();
+
+  // * AFTER 25 VOTES STOP LISTENING FOR CLICKS
+  if (voteCount === 0) {
+    imageContainer.removeEventListener('click', handleImageClick);
+  }
+
 }
 
 // * CONSTRUCTOR
@@ -88,7 +110,7 @@ let pen = new Products('pen');
 let pet = new Products('pet-sweep');
 let scissors = new Products('scissors');
 let shark = new Products('shark');
-let sweep = new Products('sweep', '.png');
+let sweep = new Products('sweep', 'png');
 let tauntaun = new Products('tauntaun');
 let unicorn = new Products('unicorn');
 let water = new Products('water-can');
@@ -99,3 +121,4 @@ productArray.push(bag, banana, bathroom, boots, breakfast, bubblegum, chair, cth
 renderImages();
 
 imageContainer.addEventListener('click', handleImageClick);
+resultsBtn, addEventListener('click', handleShowResults);
