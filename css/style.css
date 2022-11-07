@@ -1,0 +1,34 @@
+* {
+  background: gray;
+}
+
+section #img-container {
+  /* display: block;
+  margin-left: auto;
+  margin-right: auto; */
+}
+
+img {
+  width: 200px;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 30px;
+}
+
+#show-results-btn {
+  padding: 10px;
+}
+
+#show-results-btn:hover {
+  background: green;
+}
+
+main {
+  text-align: center;
+}
+
+footer {
+  margin-top: 50px;
+  text-align: center;
+}
