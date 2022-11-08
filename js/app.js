@@ -4,7 +4,7 @@
 
 // * GLOBALS
 
-let voteCount = 25;
+let voteCount = 5;
 let productArray = [];
 
 // * DOM REFERENCES
@@ -14,7 +14,9 @@ let imgOne = document.getElementById('img-one');
 let imgTwo = document.getElementById('img-two');
 let imgThree = document.getElementById('img-three');
 let resultsBtn = document.getElementById('show-results-btn');
-let resultsContainer = document.getElementById('results-container');
+// let resultsContainer = document.getElementById('results-container');
+
+let chartContext = document.getElementById('my-chart').getContext('2d');
 
 // * HELPER/UTILITY FUNCITONS
 
@@ -53,15 +55,44 @@ function renderImages() {
 // * EVENT HANDLERS
 
 function handleShowResults() {
+
   if (voteCount === 0) {
+
+    // for (let i = 0; i < productArray.length; i++) {
+    //   let liElem = document.createElement('li');
+    //   liElem.textContent = `${productArray[i].name} had ${productArray[i].clicks} votes, and was seen ${productArray[i].views} times.`;
+    //   resultsContainer.appendChild(liElem);
+    // }
+    let prodNames = [];
+    let prodViews = [];
+    let prodClicks = [];
     for (let i = 0; i < productArray.length; i++) {
-      let liElem = document.createElement('li');
-      liElem.textContent = `${productArray[i].name} had ${productArray[i].clicks} votes, and was seen ${productArray[i].views} times.`;
-      resultsContainer.appendChild(liElem);
+      prodNames.push(productArray[i].name);
+      prodViews.push(productArray[i].views);
+      prodClicks.push(productArray[i].clicks);
     }
+
+    let chartConfig = {
+      type: 'bar',
+      data: {
+        dataSets: [{
+          label: '# of Views',
+          data: prodViews,
+        }, {
+          label: '# of Clicks',
+          data: prodClicks,
+        }],
+        labels: prodNames,
+      },
+      options: {},
+    };
+
+    let myChart = new Chart(chartContext, chartConfig);
     resultsBtn.removeEventListener('click', handleShowResults);
   }
 }
+
+// let myChart = new chartConfig(chartContext, chartConfig);
 
 function handleImageClick() {
   // console.dir(event.target);
@@ -71,12 +102,13 @@ function handleImageClick() {
   for (let i = 0; i < productArray.length; i++) {
     if (productArray[i].name === prodClicked) {
       productArray[i].clicks++;
+
+      voteCount--;
+
+      // * RENDER NEW IMAGES
+      renderImages();
     }
   }
-  voteCount--;
-
-  // * RENDER NEW IMAGES
-  renderImages();
 
   // * AFTER 25 VOTES STOP LISTENING FOR CLICKS
   if (voteCount === 0) {
@@ -117,6 +149,12 @@ let water = new Products('water-can');
 let wine = new Products('wine-glass');
 
 productArray.push(bag, banana, bathroom, boots, breakfast, bubblegum, chair, cthulhu, dog, dragon, pen, pet, scissors, shark, sweep, tauntaun, unicorn, water, wine);
+
+let prodNames = [];
+
+for (let i = 0; i < productArray.length; i++) {
+  prodNames.push(productArray[i].name);
+}
 
 renderImages();
 
