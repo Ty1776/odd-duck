@@ -6,6 +6,7 @@
 
 let voteCount = 5;
 let productArray = [];
+let myChart = null;
 
 // * DOM REFERENCES
 
@@ -16,7 +17,7 @@ let imgThree = document.getElementById('img-three');
 let resultsBtn = document.getElementById('show-results-btn');
 // let resultsContainer = document.getElementById('results-container');
 
-let chartContext = document.getElementById('my-chart').getContext('2d');
+// let chartContext = document.getElementById('my-chart').getContext('2d');
 
 // * HELPER/UTILITY FUNCITONS
 
@@ -24,10 +25,22 @@ function randomIndex() {
   return Math.floor(Math.random() * productArray.length);
 }
 
+// let picArray = [];
+
 function renderImages() {
   let imgOneRandom = randomIndex();
   let imgTwoRandom = randomIndex();
   let imgThreeRandom = randomIndex();
+
+  // while (picArray.length < 3);
+  // let randomPic = randomIndex();
+  // if (!picArray.includes(randomPic)) {
+  //   picArray.push(randomIndex);
+  // }
+
+  // let imgOneRandom = picArray.shift();
+  // let imgTwoRandom = picArray.shift();
+  // let imgThreeRandom = picArray.shift();
 
   while (imgOneRandom === imgTwoRandom) {
     imgTwoRandom = randomIndex();
@@ -55,14 +68,9 @@ function renderImages() {
 // * EVENT HANDLERS
 
 function handleShowResults() {
-
+  let chartContext = document.getElementById('my-chart').getContext('2d');
   if (voteCount === 0) {
 
-    // for (let i = 0; i < productArray.length; i++) {
-    //   let liElem = document.createElement('li');
-    //   liElem.textContent = `${productArray[i].name} had ${productArray[i].clicks} votes, and was seen ${productArray[i].views} times.`;
-    //   resultsContainer.appendChild(liElem);
-    // }
     let prodNames = [];
     let prodViews = [];
     let prodClicks = [];
@@ -71,28 +79,55 @@ function handleShowResults() {
       prodViews.push(productArray[i].views);
       prodClicks.push(productArray[i].clicks);
     }
+    console.log(prodClicks, prodNames, prodViews);
 
     let chartConfig = {
       type: 'bar',
       data: {
-        dataSets: [{
+        labels: prodNames,
+        barThickness: 'flex',
+        datasets: [{
           label: '# of Views',
           data: prodViews,
+          backgroundColor: 'red',
+          borderColor: 'red',
+          borderWidth: 1,
         }, {
           label: '# of Clicks',
           data: prodClicks,
+          backgroundColor: 'green',
+          borderColor: 'green',
+          borderWidth: 1,
         }],
-        labels: prodNames,
+        borderWidth: 1
       },
-      options: {},
+      options: {
+        legend: {
+          display: false,
+        },
+        scales: {
+          x: {
+            beginAtZero: true,
+          },
+          y: {
+            beginAtZero: true,
+          },
+          // x: [{
+          //   ticks: {
+          //     stepSize: 1,
+          //   },
+          gridLines: {
+            display: false,
+          },
+        }
+      },
     };
 
-    let myChart = new Chart(chartContext, chartConfig);
+    myChart = new Chart(chartContext, chartConfig);
     resultsBtn.removeEventListener('click', handleShowResults);
+    // myChart();
   }
 }
-
-// let myChart = new chartConfig(chartContext, chartConfig);
 
 function handleImageClick() {
   // console.dir(event.target);
