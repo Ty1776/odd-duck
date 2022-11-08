@@ -4,7 +4,7 @@
 
 // * GLOBALS
 
-let voteCount = 5;
+let voteCount = 25;
 let productArray = [];
 let myChart = null;
 
@@ -15,9 +15,6 @@ let imgOne = document.getElementById('img-one');
 let imgTwo = document.getElementById('img-two');
 let imgThree = document.getElementById('img-three');
 let resultsBtn = document.getElementById('show-results-btn');
-// let resultsContainer = document.getElementById('results-container');
-
-// let chartContext = document.getElementById('my-chart').getContext('2d');
 
 // * HELPER/UTILITY FUNCITONS
 
@@ -25,44 +22,39 @@ function randomIndex() {
   return Math.floor(Math.random() * productArray.length);
 }
 
-// let picArray = [];
+let picArray = [];
+function uniqueImageChecker() {
+  let imageArray = [];
+  while (imageArray.length < 3) {
+    let randomImage = randomIndex();
+    if (imageArray.includes(randomImage) || picArray.includes(randomImage)) {
+      // do nothing
+    }
+    else {
+      imageArray.push(randomImage);
+    }
+  }
+  picArray = imageArray;
+  return (imageArray);
+}
 
 function renderImages() {
-  let imgOneRandom = randomIndex();
-  let imgTwoRandom = randomIndex();
-  let imgThreeRandom = randomIndex();
+  let imageChecker = uniqueImageChecker();
+  let imgOneRandom = productArray[imageChecker[0]];
+  let imgTwoRandom = productArray[imageChecker[1]];
+  let imgThreeRandom = productArray[imageChecker[2]];
 
-  // while (picArray.length < 3);
-  // let randomPic = randomIndex();
-  // if (!picArray.includes(randomPic)) {
-  //   picArray.push(randomIndex);
-  // }
+  imgOne.src = imgOneRandom.imagePath;
+  imgTwo.src = imgTwoRandom.imagePath;
+  imgThree.src = imgThreeRandom.imagePath;
 
-  // let imgOneRandom = picArray.shift();
-  // let imgTwoRandom = picArray.shift();
-  // let imgThreeRandom = picArray.shift();
+  imgOne.alt = imgOneRandom.name;
+  imgTwo.alt = imgTwoRandom.name;
+  imgThree.alt = imgThreeRandom.name;
 
-  while (imgOneRandom === imgTwoRandom) {
-    imgTwoRandom = randomIndex();
-  }
-  while (imgTwoRandom === imgThreeRandom) {
-    imgThreeRandom = randomIndex();
-  }
-  while (imgThreeRandom === imgOneRandom) {
-    imgOneRandom = randomIndex();
-  }
-
-  imgOne.src = productArray[imgOneRandom].imagePath;
-  imgTwo.src = productArray[imgTwoRandom].imagePath;
-  imgThree.src = productArray[imgThreeRandom].imagePath;
-
-  imgOne.alt = productArray[imgOneRandom].name;
-  imgTwo.alt = productArray[imgTwoRandom].name;
-  imgThree.alt = productArray[imgThreeRandom].name;
-
-  productArray[imgOneRandom].views++;
-  productArray[imgTwoRandom].views++;
-  productArray[imgThreeRandom].views++;
+  imgOneRandom.views++;
+  imgTwoRandom.views++;
+  imgThreeRandom.views++;
 }
 
 // * EVENT HANDLERS
@@ -79,7 +71,6 @@ function handleShowResults() {
       prodViews.push(productArray[i].views);
       prodClicks.push(productArray[i].clicks);
     }
-    console.log(prodClicks, prodNames, prodViews);
 
     let chartConfig = {
       type: 'bar',
@@ -112,10 +103,6 @@ function handleShowResults() {
           y: {
             beginAtZero: true,
           },
-          // x: [{
-          //   ticks: {
-          //     stepSize: 1,
-          //   },
           gridLines: {
             display: false,
           },
@@ -125,12 +112,10 @@ function handleShowResults() {
 
     myChart = new Chart(chartContext, chartConfig);
     resultsBtn.removeEventListener('click', handleShowResults);
-    // myChart();
   }
 }
 
 function handleImageClick() {
-  // console.dir(event.target);
 
   let prodClicked = event.target.alt;
 
