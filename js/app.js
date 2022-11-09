@@ -133,6 +133,12 @@ function handleImageClick() {
   // * AFTER 25 VOTES STOP LISTENING FOR CLICKS
   if (voteCount === 0) {
     imageContainer.removeEventListener('click', handleImageClick);
+
+    // ** STRINGIFY THE DATA **
+    let stringifiedProducts = JSON.stringify(productArray);
+
+    //  ** ADD TO LOCAL STORAGE **
+    localStorage.setItem('myProducts', stringifiedProducts);
   }
 
 }
@@ -148,27 +154,39 @@ function Products(name, fileExtension = 'jpg') {
 
 // * EXECUTABLE
 
-let bag = new Products('bag');
-let banana = new Products('banana');
-let bathroom = new Products('bathroom');
-let boots = new Products('boots');
-let breakfast = new Products('breakfast');
-let bubblegum = new Products('bubblegum');
-let chair = new Products('chair');
-let cthulhu = new Products('cthulhu');
-let dog = new Products('dog-duck');
-let dragon = new Products('dragon');
-let pen = new Products('pen');
-let pet = new Products('pet-sweep');
-let scissors = new Products('scissors');
-let shark = new Products('shark');
-let sweep = new Products('sweep', 'png');
-let tauntaun = new Products('tauntaun');
-let unicorn = new Products('unicorn');
-let water = new Products('water-can');
-let wine = new Products('wine-glass');
+//  ** PULL FROM LOCAL STORAGE **
+let retreivedProducts = localStorage.getItem('myProducts');
 
-productArray.push(bag, banana, bathroom, boots, breakfast, bubblegum, chair, cthulhu, dog, dragon, pen, pet, scissors, shark, sweep, tauntaun, unicorn, water, wine);
+//  ** PARSE THE DATA
+let parsedProducts = JSON.parse(retreivedProducts);
+
+if (parsedProducts) {
+  productArray = parsedProducts;
+} else {
+  let bag = new Products('bag');
+  let banana = new Products('banana');
+  let bathroom = new Products('bathroom');
+  let boots = new Products('boots');
+  let breakfast = new Products('breakfast');
+  let bubblegum = new Products('bubblegum');
+  let chair = new Products('chair');
+  let cthulhu = new Products('cthulhu');
+  let dog = new Products('dog-duck');
+  let dragon = new Products('dragon');
+  let pen = new Products('pen');
+  let pet = new Products('pet-sweep');
+  let scissors = new Products('scissors');
+  let shark = new Products('shark');
+  let sweep = new Products('sweep', 'png');
+  let tauntaun = new Products('tauntaun');
+  let unicorn = new Products('unicorn');
+  let water = new Products('water-can');
+  let wine = new Products('wine-glass');
+
+  productArray.push(bag, banana, bathroom, boots, breakfast, bubblegum, chair, cthulhu, dog, dragon, pen, pet, scissors, shark, sweep, tauntaun, unicorn, water, wine);
+
+  console.log('products after constructions', productArray);
+}
 
 let prodNames = [];
 
